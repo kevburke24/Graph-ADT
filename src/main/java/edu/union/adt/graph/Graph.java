@@ -24,7 +24,8 @@ public class Graph<V>
      */
     public Graph() 
     {
-        HashMap <V, V[]> graph = new HashMap<>();
+        V[] edges;
+        HashMap <V, edges> graph = new HashMap<>();
     }
 
     /**
@@ -57,7 +58,7 @@ public class Graph<V>
      */
     public int degree(V vertex)
     {
-        if (!graph.containsKey(vertex)){
+        if (!contains(vertex)){
             throw RuntimeException;
         }
         else{
@@ -95,6 +96,10 @@ public class Graph<V>
      */
     public void addVertex(V vertex)
     {
+        if (!contains(vertex)){
+            V[] edges = new V[graph.size()];
+            graph.put(vertex, edges);
+        }
     }
 
     /**
@@ -132,7 +137,7 @@ public class Graph<V>
      */
     public boolean contains(V vertex)
     {
-        return false;
+        return graph.containsKey(vertex);
     }
 
     /**
