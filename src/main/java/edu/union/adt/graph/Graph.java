@@ -54,7 +54,20 @@ public class Graph<V>
      */
     public int degree(V vertex)
     {
-        
+        if (!contains(vertex)){
+            throw new RuntimeException("RuntimeException");
+        }
+        else{
+            Iterator graphIterator = graph.entrySet().iterator();
+            Map.Entry graphElement = (Map.Entry) graphIterator.next();
+            V vert = (V)graphElement.getKey();
+            while (graphIterator.hasNext() && vert != vertex){
+                graphElement = (Map.Entry) graphIterator.next();
+                vert = (V)graphElement.getKey();
+            }
+            ArrayList<V> edges = graph.get(vert);
+            return edges.size();
+	    }
         
     }
 
@@ -147,7 +160,20 @@ public class Graph<V>
      */
     public boolean hasEdge(V from, V to)
     {
-        return false;
+        if (!contains(from)){
+            return false;
+        }
+        else{
+            Iterator graphIterator = graph.entrySet().iterator();
+            Map.Entry graphElement = (Map.Entry) graphIterator.next();
+            V vert = (V) graphElement.getKey();
+            while (graphIterator.hasNext() && vert != from){
+                graphElement = (Map.Entry) graphIterator.next();
+                vert = (V)graphElement.getKey();
+            }
+	    ArrayList <V> edges = graph.get(vert);
+	    return edges.contains(to);
+	    }
     }
 
     /**
