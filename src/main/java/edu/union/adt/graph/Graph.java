@@ -1,4 +1,5 @@
 package edu.union.adt.graph;
+import java.util.*;
 
 /**
  * A graph that establishes connections (edges) between objects of
@@ -23,6 +24,7 @@ public class Graph<V>
      */
     public Graph() 
     {
+        HashMap <V, V[]> graph = new HashMap<>();
     }
 
     /**
@@ -30,7 +32,7 @@ public class Graph<V>
      */
     public int numVertices()
     {
-        return 0;
+        return graph.size();
     }
 
     /**
@@ -38,7 +40,6 @@ public class Graph<V>
      */
     public int numEdges()
     {
-        return 0;
     }
 
     /**
