@@ -19,13 +19,13 @@ import java.util.*;
  */
 public class Graph<V>
 {
+    private HashMap <V, ArrayList<V>> graph;
     /**
      * Create an empty graph.
      */
     public Graph() 
     {
-        V[] edges;
-        HashMap <V, edges> graph = new HashMap<>();
+        graph = new HashMap <>();
     }
 
     /**
@@ -189,5 +189,21 @@ public class Graph<V>
     public String toString()
     {
         return "";
+    }
+    
+    public boolean equals(Object o){
+        if (o == null){
+	        return false;
+        }   
+	}
+	else if (o == this){
+	   return true;
+	}
+	else if (o.getClass() != this.getClass()){
+	   return false;
+	}
+	Graph otherGraph = (Graph)o;
+	return otherGraph.graph.equals(this.graph);
+
     }
 }
