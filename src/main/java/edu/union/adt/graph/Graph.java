@@ -40,6 +40,11 @@ public class Graph<V>
      */
     public int numEdges()
     {
+        int count = 0;
+        for (V[] edges : graph.values()){
+            count = count + edges.length;
+        }
+        return count;
     }
 
     /**
@@ -52,7 +57,20 @@ public class Graph<V>
      */
     public int degree(V vertex)
     {
-        return 0;
+        if (!graph.containsKey(vertex)){
+            throw RuntimeException;
+        }
+        else{
+            Iterator graphIterator = graph.entrySet().iterator();
+            Map.Entry graphElement = (Map.Entry) graphIterator.next();
+            V vert = graphElement.getKey();
+            while (graphIterator.hasNext() && vert != vertex){
+                graphElement = (Map.Entry) graphIterator.next();
+                vert = graphElement.getKey();
+            }
+            V[] edges = graph.get(vert);
+            return edges.length;
+        }
     }
 
     /**
