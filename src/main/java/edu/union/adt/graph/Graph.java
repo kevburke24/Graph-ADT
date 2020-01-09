@@ -69,6 +69,17 @@ public class Graph<V>
      */
     public void addEdge(V from, V to)
     {
+        if(graph.containsKey(from)){
+	         ArrayList <V> edges = graph.get(from);
+    	    if (!edges.contains(to)){
+    		     edges.add(to);
+    	    }
+	    }
+    	else{
+    	   ArrayList <V> newEdge = new ArrayList<>();
+    	   newEdge.add(to);
+    	   graph.put(from, newEdge);
+    	}
     }
 
     /**
