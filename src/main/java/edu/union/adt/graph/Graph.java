@@ -208,7 +208,30 @@ public class Graph<V>
      */
     public String toString()
     {
-        return "";
+        String builder = new String();
+    	for (V vertex : graph.keySet()){
+    		String strVertex = vertex.toString();
+    		builder = builder + strVertex + ": ";
+    		ArrayList <V> edges = graph.get(vertex);
+    		int degree = edges.size();
+    		int i = 0;
+    		if (degree > 0){
+    			while (i < degree -1){
+    				String strEdge = edges.get(i).toString();
+    				builder = builder + strEdge + ", ";
+    				i++;
+    			}
+    		String strEdge = edges.get(i).toString();
+    		builder = builder + strEdge + "\n";
+    
+    		}
+    		else{
+    			strVertex = vertex.toString();
+    			builder = builder + strVertex + ": \n";
+    		}
+    		
+    	}
+        	return builder;
     }
     
     public boolean equals(Object o){
