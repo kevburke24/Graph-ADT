@@ -41,6 +41,11 @@ public class Graph<V>
      */
     public int numEdges()
     {
+        int count;
+        for (value : graph.values()){
+            count = count + value.size();
+        }
+        return count;
         
     }
 
@@ -82,17 +87,27 @@ public class Graph<V>
      */
     public void addEdge(V from, V to)
     {
-        if(graph.containsKey(from)){
-	         ArrayList <V> edges = graph.get(from);
-    	    if (!edges.contains(to)){
-    		     edges.add(to);
-    	    }
+        if (contains(from)){
+	       
+	       ArrayList <V> edges = graph.get(from);
+    	   
+    	   if (!edges.contains(to)){
+    		    edges.add(to);
+    	   }
 	    }
-    	else{
+
+    	if (!contains(from)){
     	   ArrayList <V> newEdge = new ArrayList<>();
     	   newEdge.add(to);
     	   graph.put(from, newEdge);
     	}
+    	
+    	if (!contains(to)){
+    	   ArrayList<V> e = new ArrayList<>();
+    	   graph.put(to, e);
+    	}
+    	
+	
     }
 
     /**
@@ -115,7 +130,12 @@ public class Graph<V>
      */
     public Iterable<V> getVertices()
     {
-        return null;
+        ArrayList <V> vertices = new ArrayList<>();
+        for (V vertex : graph.keySet()){
+		    vertices.add(vertex);
+	    }
+    	Iterable <V> v = vertices;
+    	return v;
     }
 
     /**
