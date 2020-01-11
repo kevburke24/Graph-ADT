@@ -133,7 +133,16 @@ public class Graph<V>
      */
     public Iterable<V> adjacentTo(V from)
     {
-        return null;
+         Iterator graphIterator = graph.entrySet().iterator();
+    	 Map.Entry graphElement = (Map.Entry) graphIterator.next();
+    	 V vert = (V)graphElement.getKey();
+    	 while (graphIterator.hasNext() && vert != from){
+    		graphElement = (Map.Entry) graphIterator.next();
+    		vert = (V)graphElement.getKey();
+    	 }
+    	 ArrayList <V> edges = graph.get(vert);
+    	 Iterable <V> e = edges;
+    	 return e;
     }
 
     /**
