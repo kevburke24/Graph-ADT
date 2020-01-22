@@ -12,22 +12,23 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import edu.union.adt.graph.Graph;
+import edu.union.adt.graph.HashGraph;
 
 @RunWith(JUnit4.class)
 public class GraphTestsUsingEquals
 {
-    private Graph<String> g;
-    private Graph<String> g2;
-    private Graph<Object> objectGraph;
+    private HashGraph<String> g;
+    private HashGraph<String> g2;
+    private HashGraph<Object> objectGraph;
 
     @Before
     public void setUp()
     {
-        g = new Graph<String>();
-        g2 = new Graph<String>();
-        objectGraph = new Graph<Object>();
+        g = new HashGraph<String>();
+        g2 = new HashGraph<String>();
+        objectGraph = new HashGraph<Object>();
     }
-    
+
     @Test
     public void simpleEquals()
     {
@@ -82,4 +83,3 @@ public class GraphTestsUsingEquals
                      g, objectGraph);
     }
 }
-

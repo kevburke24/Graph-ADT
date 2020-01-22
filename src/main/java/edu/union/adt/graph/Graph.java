@@ -17,37 +17,23 @@ import java.util.*;
  * @author Aaron G. Cass
  * @version 1
  */
-public class Graph<V>
+public interface Graph<V>
 {
-    private HashMap <V, ArrayList<V>> graph;
+    //private HashMap <V, ArrayList<V>> graph;
     /**
      * Create an empty graph.
      */
-    public Graph() 
-    {
-        graph = new HashMap <>();
-    }
+    //public Graph();
 
     /**
      * @return the number of vertices in the graph.
      */
-    public int numVertices()
-    {
-        return graph.size();
-    }
+    public int numVertices();
 
     /**
      * @return the number of edges in the graph.
      */
-    public int numEdges()
-    {
-        int count;
-        for (value : graph.values()){
-            count = count + value.size();
-        }
-        return count;
-        
-    }
+    public int numEdges();
 
     /**
      * Gets the number of vertices connected by edges from a given
@@ -57,25 +43,7 @@ public class Graph<V>
      * @param vertex the vertex whose degree we want.
      * @return the degree of vertex 'vertex'
      */
-    public int degree(V vertex)
-    {
-        if (!contains(vertex)){
-            throw new RuntimeException("RuntimeException");
-        }
-        else{
-            Iterator graphIterator = graph.entrySet().iterator();
-            Map.Entry graphElement = (Map.Entry) graphIterator.next();
-            V vert = (V)graphElement.getKey();
-            while (graphIterator.hasNext() && vert != vertex){
-                graphElement = (Map.Entry) graphIterator.next();
-                vert = (V)graphElement.getKey();
-            }
-            ArrayList<V> edges = graph.get(vert);
-            return edges.size();
-	    }
-        
-    }
-
+    public int degree(V vertex);
     /**
      * Adds a directed edge between two vertices.  If there is already an edge
      * between the given vertices, does nothing.  If either (or both)
@@ -85,30 +53,7 @@ public class Graph<V>
      * @param from the source vertex for the added edge
      * @param to the destination vertex for the added edge
      */
-    public void addEdge(V from, V to)
-    {
-        if (contains(from)){
-	       
-	       ArrayList <V> edges = graph.get(from);
-    	   
-    	   if (!edges.contains(to)){
-    		    edges.add(to);
-    	   }
-	    }
-
-    	if (!contains(from)){
-    	   ArrayList <V> newEdge = new ArrayList<>();
-    	   newEdge.add(to);
-    	   graph.put(from, newEdge);
-    	}
-    	
-    	if (!contains(to)){
-    	   ArrayList<V> e = new ArrayList<>();
-    	   graph.put(to, e);
-    	}
-    	
-	
-    }
+    public void addEdge(V from, V to);
 
     /**
      * Adds a vertex to the graph.  If the vertex already exists in
@@ -117,26 +62,13 @@ public class Graph<V>
      *
      * @param vertex the vertex to add
      */
-    public void addVertex(V vertex)
-    {
-        ArrayList <V> edges = new ArrayList<>();
-	    graph.put(vertex, edges);
-        
-    }
+    public void addVertex(V vertex);
 
     /**
      * @return an iterable collection for the set of vertices of
      * the graph.
      */
-    public Iterable<V> getVertices()
-    {
-        ArrayList <V> vertices = new ArrayList<>();
-        for (V vertex : graph.keySet()){
-		    vertices.add(vertex);
-	    }
-    	Iterable <V> v = vertices;
-    	return v;
-    }
+    public Iterable<V> getVertices();
 
     /**
      * Gets the vertices adjacent to a given vertex.  A vertex y is
@@ -151,19 +83,7 @@ public class Graph<V>
      * vertex.  If 'from' is not a vertex in the graph, returns an
      * empty iterator.
      */
-    public Iterable<V> adjacentTo(V from)
-    {
-         Iterator graphIterator = graph.entrySet().iterator();
-    	 Map.Entry graphElement = (Map.Entry) graphIterator.next();
-    	 V vert = (V)graphElement.getKey();
-    	 while (graphIterator.hasNext() && vert != from){
-    		graphElement = (Map.Entry) graphIterator.next();
-    		vert = (V)graphElement.getKey();
-    	 }
-    	 ArrayList <V> edges = graph.get(vert);
-    	 Iterable <V> e = edges;
-    	 return e;
-    }
+    public Iterable<V> adjacentTo(V from);
 
     /**
      * Tells whether or not a vertex is in the graph.
@@ -171,10 +91,7 @@ public class Graph<V>
      * @param vertex a vertex
      * @return true iff 'vertex' is a vertex in the graph.
      */
-    public boolean contains(V vertex)
-    {
-        return graph.containsKey(vertex);
-    }
+    public boolean contains(V vertex);
 
     /**
      * Tells whether an edge exists in the graph.
@@ -187,23 +104,7 @@ public class Graph<V>
      * vertices are not vertices in the graph, then there is no edge
      * between them.
      */
-    public boolean hasEdge(V from, V to)
-    {
-        if (!contains(from)){
-            return false;
-        }
-        else{
-            Iterator graphIterator = graph.entrySet().iterator();
-            Map.Entry graphElement = (Map.Entry) graphIterator.next();
-            V vert = (V) graphElement.getKey();
-            while (graphIterator.hasNext() && vert != from){
-                graphElement = (Map.Entry) graphIterator.next();
-                vert = (V)graphElement.getKey();
-            }
-	    ArrayList <V> edges = graph.get(vert);
-	    return edges.contains(to);
-	    }
-    }
+    public boolean hasEdge(V from, V to);
 
     /**
      * Gives a string representation of the graph.  The representation
@@ -235,47 +136,8 @@ public class Graph<V>
      *
      * @return the string representation of the graph
      */
-    public String toString()
-    {
-        String builder = new String();
-    	for (V vertex : graph.keySet()){
-    		String strVertex = vertex.toString();
-    		builder = builder + strVertex + ": ";
-    		ArrayList <V> edges = graph.get(vertex);
-    		int degree = edges.size();
-    		int i = 0;
-    		if (degree > 0){
-    			while (i < degree -1){
-    				String strEdge = edges.get(i).toString();
-    				builder = builder + strEdge + ", ";
-    				i++;
-    			}
-    		String strEdge = edges.get(i).toString();
-    		builder = builder + strEdge + "\n";
-    
-    		}
-    		else{
-    			strVertex = vertex.toString();
-    			builder = builder + strVertex + ": \n";
-    		}
-    		
-    	}
-        	return builder;
-    }
-    
-    public boolean equals(Object o){
-        if (o == null){
-	        return false;
-        }   
-	}
-	else if (o == this){
-	   return true;
-	}
-	else if (o.getClass() != this.getClass()){
-	   return false;
-	}
-	Graph otherGraph = (Graph)o;
-	return otherGraph.graph.equals(this.graph);
+    public String toString();
 
-    }
+    public boolean equals(Object o);
+
 }
