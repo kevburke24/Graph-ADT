@@ -35,8 +35,8 @@ public class SimpleGraphTests
     @Test
     public void construct()
     {
-	assertEquals("New graph has no vertices", 0, g.numVertices());
-	assertEquals("New graph has no edges", 0, g.numEdges());
+    	assertEquals("New graph has no vertices", 0, g.numVertices());
+    	assertEquals("New graph has no edges", 0, g.numEdges());
     }
 
     @Test
