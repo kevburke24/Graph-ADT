@@ -1,0 +1,26 @@
+--------
+
+Your repo doesn't have a GraphFactory.java, which needs to be there so that
+I can run tests.  Recall that GraphFactory is the class that should have
+the createGraph static method.
+
+--------
+
+Your repository doesn't have a folder with this name:
+
+   src/test/java/edu/union/adt/graph/tests/<uname>
+
+that contains any .java files for your jUnit tests. (where <uname> is your
+username.)
+
+If you put your tests in a java file in the following folder instead:
+
+   src/test/java/edu/union/adt/graph/tests
+
+please use git mv to move your test java file to the right place. Make sure
+you update the package statement in your test file when you make this move.
+
+--------
+
+You don't have a .gitignore file in your repo.  Please add one.
+
