@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses
 ({
-    kevinsTests.java
+    kevinsTests.class
 })
 public class kevinsTestSuite
 { // no implementation needed; above annotations do the work.

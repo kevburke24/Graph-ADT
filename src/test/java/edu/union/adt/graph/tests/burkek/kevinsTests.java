@@ -16,7 +16,7 @@ import edu.union.adt.graph.Graph;
 import edu.union.adt.graph.GraphFactory;
 
 @RunWith(JUnit4.class)
-public class SimpleGraphTests
+public class kevinsTests
 {
     private Graph<String> g;
 
@@ -31,6 +31,7 @@ public class SimpleGraphTests
     {
         g = null;
     }
+
 
     //removeVertex when there is an edge connecting to and from the
     //vertex we want to remove
@@ -119,8 +120,13 @@ public class SimpleGraphTests
     // getPath when there are no vertices
     @Test
     public void getPath_noVertices(){
-      Iterable<String> empty = new Iterable<>();
-      assertEquals("getPath when there are no vertices", empty, g.getPath("A", "B"));
+
+      try{
+        g.getPath("A", "B");
+      }
+      catch(Exception e){
+        throw new IllegalArgumentException();
+      }
 
     }
 
@@ -129,8 +135,12 @@ public class SimpleGraphTests
     public void getPath_noTovertex(){
       g.addEdge("A", "B");
       g.addVertex("C");
-      Iterable<String> empty = new Iterable<>();
-      assertEquals("getPath when the To vertex does not exist", empty, g.getPath("A", "D"));
+      try{
+        g.getPath("A", "D");
+      }
+      catch(Exception e){
+        throw new IllegalArgumentException();
+      }
 
     }
 }
