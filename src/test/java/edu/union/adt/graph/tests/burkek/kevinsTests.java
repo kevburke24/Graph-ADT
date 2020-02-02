@@ -117,6 +117,27 @@ public class kevinsTests
 
     }
 
+    @Test
+    public void hasPath_pathExists(){
+
+      g.addEdge("A", "B");
+      g.addEdge("A", "E");
+      g.addEdge("B", "C");
+      g.addEdge("C", "D");
+      assertTrue("Should be a path from A to D", g.hasPath("A", "D"));
+
+    }
+
+    @Test
+    public void hasPath_noSuchPath(){
+      g.addEdge("A", "B");
+      g.addEdge("D", "B");
+
+      assertFalse("Should be no path from A to D", g.hasPath("A", "D"));
+
+    }
+
+
     //pathLength when there are no vertices
     @Test
     public void pathLength_noVertices(){

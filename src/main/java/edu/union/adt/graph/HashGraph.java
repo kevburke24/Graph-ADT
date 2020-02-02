@@ -370,6 +370,43 @@ public class HashGraph<V> implements Graph<V>
      * @return true iff there is a path from 'from' to 'to' in the graph.
      */
     public boolean hasPath(V from, V to){
+      if (!contains(from) || !contains(to)){
+        return false;
+      }
+      if (from.equals(to)){
+        return true;
+      }
+
+      Set <V> visited = new HashSet<>();
+      Queue<V> queue = new LinkedList<>();
+      queue.add(from);
+
+      while (!queue.isEmpty()){
+        V vertex = queue.poll();
+        ArrayList<V> neighbors = graph.get(vertex);
+        int i = 0;
+        V neighbor;
+        while (i < neighbors.size()){
+
+          neighbor = neighbors.get(i);
+
+          if (visited.contains(neighbor)){
+            continue;
+          }
+
+          if (neighbor.equals(to)){
+            return true;
+          }
+
+          queue.add(neighbor);
+          i++;
+
+        }
+
+        visited.add(vertex);
+      }
+
+      return false;
 
     }
 
@@ -390,7 +427,7 @@ public class HashGraph<V> implements Graph<V>
      * the graph.  If there is no path, returns Integer.MAX_VALUE
      */
     public int pathLength(V from, V to) {
-
+      return 0;
     }
 
     /**
