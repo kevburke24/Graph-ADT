@@ -26,6 +26,11 @@ public interface Graph<V>
     //public Graph();
 
     /**
+    * @return list of edges connected to a certain vertex
+    */
+    public ArrayList<V> getEdges(V vertex);
+
+    /**
      * @return the number of vertices in the graph.
      */
     public int numVertices();

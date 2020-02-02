@@ -29,6 +29,16 @@ public class HashGraph<V> implements Graph<V>
         graph = new HashMap <>();
     }
 
+    //Returns the edges connected to a certain vertex
+    public ArrayList<V> getEdges(V vertex){
+      return (ArrayList<V>) graph.get(vertex);
+    }
+
+    //Returns a vertex connected to the passed vertex
+    private V getConnectedVertex(V vertex){
+      return vertex;
+    }
+
     /**
      * @return the number of vertices in the graph.
      */
@@ -93,12 +103,13 @@ public class HashGraph<V> implements Graph<V>
     {
         if (contains(from)){
 
-	   ArrayList <V> edges = graph.get(from);
+	       ArrayList <V> edges = getEdges(from);
 
     	   if (!edges.contains(to)){
     		    edges.add(to);
+            graph.put(from, edges);
     	   }
-	}
+	     }
 
     	if (!contains(from)){
     	   ArrayList <V> newEdge = new ArrayList<>();
@@ -125,7 +136,7 @@ public class HashGraph<V> implements Graph<V>
     public void addVertex(V vertex)
     {
         ArrayList <V> edges = new ArrayList<>();
-	graph.put(vertex, edges);
+	      graph.put(vertex, edges);
 
     }
 
@@ -156,7 +167,7 @@ public class HashGraph<V> implements Graph<V>
      * vertex.  If 'from' is not a vertex in the graph, returns an
      * empty iterator.
      */
-     @Override
+    @Override
     public Iterable<V> adjacentTo(V from)
     {
        Iterator graphIterator = graph.entrySet().iterator();
@@ -167,8 +178,8 @@ public class HashGraph<V> implements Graph<V>
       		vert = (V)graphElement.getKey();
     	 }
     	 ArrayList <V> edges = graph.get(vert);
-    	 Iterable <V> e = edges;
-    	 return e;
+    	 //Iterable <V> e = edges;
+    	 return edges;
     }
 
     /**
@@ -289,7 +300,7 @@ public class HashGraph<V> implements Graph<V>
 	HashGraph otherGraph = (HashGraph)o;
 	return otherGraph.graph.equals(this.graph);
 
-    }
+  }
 
     /**
      * Removes a vertex from the graph.  Also removes any edges
@@ -307,7 +318,16 @@ public class HashGraph<V> implements Graph<V>
      * @param toRemove the vertex to remove.
      */
     public void removeVertex(V toRemove){
-
+      if(contains(toRemove)){
+        graph.remove(toRemove);
+      }
+      for (V vertex : graph.keySet()){
+        if (graph.get(vertex).contains(toRemove)){
+          ArrayList<V> edges = graph.get(vertex);
+          edges.remove(toRemove);
+          graph.put(vertex, edges);
+        }
+      }
     }
 
     /**
@@ -317,7 +337,6 @@ public class HashGraph<V> implements Graph<V>
      * to) was an edge in the graph, then numEdges = numEdges' - 1
      */
     public void removeEdge(V from, V to){
-
     }
 
     /**
@@ -339,7 +358,7 @@ public class HashGraph<V> implements Graph<V>
      * @return true iff there is a path from 'from' to 'to' in the graph.
      */
     public boolean hasPath(V from, V to){
-      return true;
+
     }
 
     /**
@@ -359,7 +378,7 @@ public class HashGraph<V> implements Graph<V>
      * the graph.  If there is no path, returns Integer.MAX_VALUE
      */
     public int pathLength(V from, V to) {
-      return 0;
+    
     }
 
     /**

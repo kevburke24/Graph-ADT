@@ -1,5 +1,6 @@
 package edu.union.adt.graph.tests.burkek;
-
+import java.util.*;
+import java.io.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -32,6 +33,19 @@ public class kevinsTests
         g = null;
     }
 
+    @Test
+    public void addEdge_vertexAlreadyExists(){
+      g.addVertex("A");
+      g.addEdge("A", "B");
+      assertEquals("Making sure new edge gets added to already existing node", 1, g.getEdges("A").size());
+    }
+
+
+    //@Test
+    //public void removeVertex_onlyEdgesFrom(){
+    //  g.addEdge("A", "B");
+    //  g.addEdge("A", "C");
+    //}
 
     //removeVertex when there is an edge connecting to and from the
     //vertex we want to remove
@@ -45,7 +59,9 @@ public class kevinsTests
 
       assertEquals("Removing a vertex caused the number vertices to decrease by 1", 2, g.numVertices());
 
-      assertEquals("Removing this vertex removes two edges",0, g.numEdges());
+      assertFalse("Graph should no longer contain toRemove as an edge", g.hasEdge("A", "B"));
+
+      //assertEquals("Removing this vertex removes two edges",0, g.numEdges());
 
     }
 
@@ -63,6 +79,8 @@ public class kevinsTests
 
       assertEquals("Making sure the number of vertices did not change", 2, g.numVertices());
 
+      assertFalse("Connected node shouldn't have edge after removal", g.hasEdge("A","B"));
+
     }
 
     //removeEdge when the To vertex doesn't exist
@@ -74,9 +92,9 @@ public class kevinsTests
       g.addEdge("B", "C");
       g.removeEdge("A", "E");
 
-      assertEquals("Making sure the number of vertices did not change", 2, g.numVertices());
+      assertEquals("Making sure the number of vertices did not change", 3, g.numVertices());
 
-      assertEquals("Making sure the number of edges did not change", 1, g.numEdges());
+      assertEquals("Making sure the number of edges did not change", 2, g.numEdges());
 
       assertEquals("Making sure the degree of From node doesn't change", 1, g.degree("A"));
     }
@@ -117,30 +135,19 @@ public class kevinsTests
 
     }
 
-    // getPath when there are no vertices
+    // getPath when path doesn't exist
     @Test
-    public void getPath_noVertices(){
-
-      try{
-        g.getPath("A", "B");
-      }
-      catch(Exception e){
-        throw new IllegalArgumentException();
-      }
-
+    public void getPath_noPath(){
+      g.addEdge("A", "B");
+      g.addVertex("C");
+      assertEquals("Checking that method returns empty iterable when no such path exists", 0,
+      g.getPath("A", "C"));
     }
 
     //getPath when the To vertex does not exist
     @Test
     public void getPath_noTovertex(){
-      g.addEdge("A", "B");
-      g.addVertex("C");
-      try{
-        g.getPath("A", "D");
-      }
-      catch(Exception e){
-        throw new IllegalArgumentException();
-      }
+
 
     }
 }
