@@ -337,6 +337,18 @@ public class HashGraph<V> implements Graph<V>
      * to) was an edge in the graph, then numEdges = numEdges' - 1
      */
     public void removeEdge(V from, V to){
+      if (hasEdge(from, to)){
+       ArrayList<V> edges = (ArrayList<V>)getEdges(from);
+       int i = 1;
+       V vertex = edges.get(0);
+       while (i < edges.size() && !vertex.equals(to)){
+         i++;
+         vertex = edges.get(i);
+       }
+       edges.remove(vertex);
+       graph.put(from, edges);
+     }
+
     }
 
     /**
@@ -378,7 +390,7 @@ public class HashGraph<V> implements Graph<V>
      * the graph.  If there is no path, returns Integer.MAX_VALUE
      */
     public int pathLength(V from, V to) {
-    
+
     }
 
     /**
