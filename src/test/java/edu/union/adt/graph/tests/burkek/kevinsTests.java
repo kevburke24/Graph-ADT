@@ -131,12 +131,24 @@ public class kevinsTests
     @Test
     public void hasPath_noSuchPath(){
       g.addEdge("A", "B");
-      g.addEdge("D", "B");
+      g.addEdge("B","C");
+      g.addVertex("H");
 
-      assertFalse("Should be no path from A to D", g.hasPath("A", "D"));
+      assertFalse("Checking hasPath when both vertices exist but no path between them", g.hasPath("A", "H"));
 
     }
 
+    @Test
+    public void hasPath_repeatNode(){
+      g.addEdge("A", "B");
+      g.addEdge("B", "C");
+      g.addEdge("C", "D");
+      g.addEdge("C", "A");
+      g.addEdge("D", "G");
+      g.addEdge("G", "H");
+
+      assertTrue("Checking hasPath for when a later node points to start node", g.hasPath("A", "H"));
+    }
 
     //pathLength when there are no vertices
     @Test
@@ -153,22 +165,113 @@ public class kevinsTests
       g.addEdge("B","C");
       g.addVertex("H");
       assertEquals("pathLength when the From vertex does not exist", Integer.MAX_VALUE, g.pathLength("M", "H"));
+    }
+
+    @Test
+    public void pathLength_noSuchPathExists(){
+      g.addEdge("A", "B");
+      g.addEdge("B","C");
+      g.addVertex("H");
+      assertEquals("pathLength when both vertices are in graph but there is no path between them", Integer.MAX_VALUE, g.pathLength("A", "H"));
 
     }
 
+    @Test
+    public void pathLength_oneShortestPath(){
+      g.addEdge("A", "B");
+      g.addEdge("A", "E");
+      g.addEdge("B", "C");
+      g.addEdge("C", "D");
+      g.addEdge("E", "D");
+
+      assertEquals("Shortest path A -> E -> D should be of length 2", 2, g.pathLength("A", "D"));
+    }
+
+    @Test
+    public void pathLength_twoShortestPaths(){
+      g.addEdge("A", "B");
+      g.addEdge("A", "E");
+      g.addEdge("B", "D");
+      g.addEdge("E", "D");
+
+      assertEquals("Two cases where shortest path is 2", 2, g.pathLength("A", "D"));
+    }
+
+    //KEEP
+    @Test
+    public void pathLength_repeatNode(){
+      g.addEdge("A", "B");
+      g.addEdge("B", "C");
+      g.addEdge("C", "D");
+      g.addEdge("C", "A");
+      g.addEdge("D", "G");
+      g.addEdge("G", "H");
+
+      assertEquals("Path where a later node points to start node", 5, g.pathLength("A", "H"));
+
+    }
+
+
+
+    @Test
+    public void getPath_onePath(){
+      g.addEdge("A", "B");
+      g.addEdge("B", "C");
+      LinkedList<String> l = new LinkedList<>();
+      l.add("A");
+      l.add("B");
+      l.add("C");
+      assertEquals(l, g.getPath("A", "C"));
+    }
+
+
     // getPath when path doesn't exist
     @Test
-    public void getPath_noPath(){
-      g.addEdge("A", "B");
-      g.addVertex("C");
-      assertEquals("Checking that method returns empty iterable when no such path exists", 0,
+    public void getPath_graphEmpty(){
+      LinkedList<String> l = new LinkedList<>();
+      assertEquals("Checking that method returns empty iterable when graph is empty", l,
       g.getPath("A", "C"));
     }
 
     //getPath when the To vertex does not exist
     @Test
     public void getPath_noTovertex(){
-
-
+      g.addEdge("A", "B");
+      g.addEdge("B", "C");
+      g.addEdge("C", "D");
+      LinkedList<String> l = new LinkedList<>();
+      assertEquals("Checking that the method returns empty iterable when the graph's To vertex does not exist",
+      l, g.getPath("A", "F"));
     }
+
+    @Test
+    public void getPath_noFromVertex(){
+      g.addEdge("A", "B");
+      g.addEdge("B", "C");
+      LinkedList<String> l = new LinkedList<>();
+      assertEquals("Checking that the method returns empty iterable when the graph's From vertex does not exist",
+      l, g.getPath("F", "C"));
+    }
+
+    //KEEP
+    @Test
+    public void getPath_repeatNode(){
+      g.addEdge("A", "B");
+      g.addEdge("B", "C");
+      g.addEdge("C", "D");
+      g.addEdge("C", "A");
+      g.addEdge("D", "G");
+      g.addEdge("G", "H");
+
+      LinkedList<String> l = new LinkedList<>();
+      l.add("A");
+      l.add("B");
+      l.add("C");
+      l.add("D");
+      l.add("G");
+      l.add("H");
+
+      assertEquals("Path where a later node points to start node", l, g.getPath("A", "H"));
+    }
+
 }

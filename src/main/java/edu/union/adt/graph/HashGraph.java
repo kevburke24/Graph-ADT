@@ -1,6 +1,7 @@
 package edu.union.adt.graph;
 import java.util.*;
 import java.io.*;
+import java.lang.*;
 
 /**
  * A graph that establishes connections (edges) between objects of
@@ -391,6 +392,7 @@ public class HashGraph<V> implements Graph<V>
           neighbor = neighbors.get(i);
 
           if (visited.contains(neighbor)){
+            i++;
             continue;
           }
 
@@ -427,7 +429,50 @@ public class HashGraph<V> implements Graph<V>
      * the graph.  If there is no path, returns Integer.MAX_VALUE
      */
     public int pathLength(V from, V to) {
-      return 0;
+      HashMap <V, Integer> distances = new HashMap<>();
+      if (!hasPath(from, to)){
+        return Integer.MAX_VALUE;
+      }
+      if (from.equals(to)){
+        return 0;
+      }
+
+      distances.put(from, 0);
+
+      Queue<V> queue = new LinkedList<>();
+      queue.add(from);
+
+      while (!queue.isEmpty()){
+
+        V curr_ver = queue.poll();
+        ArrayList<V> neighbors = graph.get(curr_ver);
+        int i = 0;
+        V neighbor;
+        int current_dist = distances.get(curr_ver);
+
+        while (i < neighbors.size()){
+
+          neighbor = neighbors.get(i);
+
+          if (distances.containsKey(neighbor)){
+            i++;
+            continue;
+          }
+
+          if(neighbor.equals(to)){
+            return distances.get(curr_ver) + 1;
+          }
+
+          i++;
+          distances.put(neighbor, current_dist+ 1);
+          queue.add(neighbor);
+
+        }
+
+      }
+
+      return Integer.MAX_VALUE;
+
     }
 
     /**
@@ -450,7 +495,6 @@ public class HashGraph<V> implements Graph<V>
      * returns an empty Iterable collection of vertices.
      */
     public Iterable<V> getPath(V from, V to){
-      ArrayList<V> arr = new ArrayList<>();
-      return arr;
+      return new LinkedList<V>();
     }
-}
+  }
