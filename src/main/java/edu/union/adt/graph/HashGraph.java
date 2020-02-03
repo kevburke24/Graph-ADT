@@ -495,6 +495,61 @@ public class HashGraph<V> implements Graph<V>
      * returns an empty Iterable collection of vertices.
      */
     public Iterable<V> getPath(V from, V to){
+      HashMap<V, Integer> distances = new HashMap<>();
+      HashMap<V, V> previous = new HashMap<>();
+      previous.put(from, from);
+
+      if (!hasPath(from, to)){
+        return new LinkedList<V>();
+      }
+
+      if (from.equals(to)){
+        return new LinkedList<V>();
+      }
+
+      distances.put(from, 0);
+
+      Queue<V> queue = new LinkedList<>();
+      queue.add(from);
+
+      while (!queue.isEmpty()){
+
+        V curr_ver = queue.poll();
+        ArrayList<V> neighbors = graph.get(curr_ver);
+        int i = 0;
+        V neighbor;
+        int current_dist = distances.get(curr_ver);
+
+        while (i < neighbors.size()){
+
+          neighbor = neighbors.get(i);
+
+          previous.put(neighbor, curr_ver);
+
+          if (distances.containsKey(neighbor)){
+            i++;
+            continue;
+          }
+
+          if (neighbor.equals(to)) {
+            LinkedList<V> ret = new LinkedList<>();
+            V last = neighbor;
+            ret.addFirst(last);
+            while (!last.equals(from)){
+              V prev = previous.get(last);
+              ret.addFirst(prev);
+              last = prev;
+            }
+            return ret;
+          }
+
+          i++;
+
+          distances.put(neighbor, current_dist + 1);
+          queue.add(neighbor);
+
+        }
+      }
       return new LinkedList<V>();
     }
   }
