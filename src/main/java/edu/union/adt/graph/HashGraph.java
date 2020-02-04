@@ -35,11 +35,6 @@ public class HashGraph<V> implements Graph<V>
       return (ArrayList<V>) graph.get(vertex);
     }
 
-    //Returns a vertex connected to the passed vertex
-    private V getConnectedVertex(V vertex){
-      return vertex;
-    }
-
     /**
      * @return the number of vertices in the graph.
      */
@@ -74,20 +69,21 @@ public class HashGraph<V> implements Graph<V>
      @Override
     public int degree(V vertex)
     {
-        if (!contains(vertex)){
-            throw new RuntimeException("RuntimeException");
+      if (contains(vertex)){
+        Iterator graphIterator = graph.entrySet().iterator();
+        Map.Entry graphElement = (Map.Entry) graphIterator.next();
+        V vert = (V)graphElement.getKey();
+        while (graphIterator.hasNext() && vert != vertex){
+            graphElement = (Map.Entry) graphIterator.next();
+            vert = (V)graphElement.getKey();
         }
-        else{
-            Iterator graphIterator = graph.entrySet().iterator();
-            Map.Entry graphElement = (Map.Entry) graphIterator.next();
-            V vert = (V)graphElement.getKey();
-            while (graphIterator.hasNext() && vert != vertex){
-                graphElement = (Map.Entry) graphIterator.next();
-                vert = (V)graphElement.getKey();
-            }
-            ArrayList<V> edges = graph.get(vert);
-            return edges.size();
-	}
+        ArrayList<V> edges = graph.get(vert);
+        return edges.size();
+      }
+      else{
+        throw new RuntimeException();
+      }
+
     }
 
     /**
@@ -102,7 +98,12 @@ public class HashGraph<V> implements Graph<V>
      @Override
     public void addEdge(V from, V to)
     {
-        if (contains(from)){
+
+      if (from.equals(null) || to.equals(null)){
+        throw new IllegalArgumentException();
+      }
+
+      if (contains(from)){
 
 	       ArrayList <V> edges = getEdges(from);
 
@@ -124,6 +125,9 @@ public class HashGraph<V> implements Graph<V>
     	}
 
 
+
+
+
     }
 
     /**
@@ -136,6 +140,9 @@ public class HashGraph<V> implements Graph<V>
     @Override
     public void addVertex(V vertex)
     {
+        if (vertex.equals(null)){
+          throw new IllegalArgumentException();
+        }
         ArrayList <V> edges = new ArrayList<>();
 	      graph.put(vertex, edges);
 
@@ -171,6 +178,9 @@ public class HashGraph<V> implements Graph<V>
     @Override
     public Iterable<V> adjacentTo(V from)
     {
+      if (from.equals(null)){
+        throw new IllegalArgumentException();
+      }
        Iterator graphIterator = graph.entrySet().iterator();
     	 Map.Entry graphElement = (Map.Entry) graphIterator.next();
     	 V vert = (V)graphElement.getKey();
@@ -192,6 +202,9 @@ public class HashGraph<V> implements Graph<V>
      @Override
     public boolean contains(V vertex)
     {
+      if (vertex.equals(null)){
+        throw new IllegalArgumentException();
+      }
         return graph.containsKey(vertex);
     }
 
@@ -209,6 +222,9 @@ public class HashGraph<V> implements Graph<V>
      @Override
     public boolean hasEdge(V from, V to)
     {
+      if (from.equals(null) || to.equals(null)){
+        throw new IllegalArgumentException();
+      }
         if (!contains(from)){
             return false;
         }
@@ -289,9 +305,9 @@ public class HashGraph<V> implements Graph<V>
   Graph objects
   */
   public boolean equals(Object o){
-        if (o == null){
-	        return false;
-        }
+  if (o == null){
+	     return false;
+  }
 	else if (o == this){
 	   return true;
 	}
@@ -319,6 +335,9 @@ public class HashGraph<V> implements Graph<V>
      * @param toRemove the vertex to remove.
      */
     public void removeVertex(V toRemove){
+      if (toRemove.equals(null)){
+        throw new IllegalArgumentException();
+      }
       if(contains(toRemove)){
         graph.remove(toRemove);
       }
@@ -338,6 +357,9 @@ public class HashGraph<V> implements Graph<V>
      * to) was an edge in the graph, then numEdges = numEdges' - 1
      */
     public void removeEdge(V from, V to){
+      if (from.equals(null) || to.equals(null)){
+        throw new IllegalArgumentException();
+      }
       if (hasEdge(from, to)){
        ArrayList<V> edges = (ArrayList<V>)getEdges(from);
        int i = 1;
@@ -371,6 +393,9 @@ public class HashGraph<V> implements Graph<V>
      * @return true iff there is a path from 'from' to 'to' in the graph.
      */
     public boolean hasPath(V from, V to){
+      if (from.equals(null) || to.equals(null)){
+        throw new IllegalArgumentException();
+      }
       if (!contains(from) || !contains(to)){
         return false;
       }
@@ -429,10 +454,16 @@ public class HashGraph<V> implements Graph<V>
      * the graph.  If there is no path, returns Integer.MAX_VALUE
      */
     public int pathLength(V from, V to) {
+
+      if (from.equals(null) || to.equals(null)){
+        throw new IllegalArgumentException();
+      }
+
       HashMap <V, Integer> distances = new HashMap<>();
       if (!hasPath(from, to)){
         return Integer.MAX_VALUE;
       }
+
       if (from.equals(to)){
         return 0;
       }
@@ -495,7 +526,6 @@ public class HashGraph<V> implements Graph<V>
      * returns an empty Iterable collection of vertices.
      */
     public Iterable<V> getPath(V from, V to){
-      HashMap<V, Integer> distances = new HashMap<>();
       HashMap<V, V> previous = new HashMap<>();
       previous.put(from, from);
 
@@ -507,8 +537,6 @@ public class HashGraph<V> implements Graph<V>
         return new LinkedList<V>();
       }
 
-      distances.put(from, 0);
-
       Queue<V> queue = new LinkedList<>();
       queue.add(from);
 
@@ -518,38 +546,45 @@ public class HashGraph<V> implements Graph<V>
         ArrayList<V> neighbors = graph.get(curr_ver);
         int i = 0;
         V neighbor;
-        int current_dist = distances.get(curr_ver);
 
         while (i < neighbors.size()){
 
           neighbor = neighbors.get(i);
 
-          previous.put(neighbor, curr_ver);
-
-          if (distances.containsKey(neighbor)){
+          if (previous.containsKey(neighbor)){
             i++;
             continue;
           }
 
+          previous.put(neighbor, curr_ver);
+
           if (neighbor.equals(to)) {
-            LinkedList<V> ret = new LinkedList<>();
-            V last = neighbor;
-            ret.addFirst(last);
-            while (!last.equals(from)){
-              V prev = previous.get(last);
-              ret.addFirst(prev);
-              last = prev;
-            }
-            return ret;
+            return reconstructPath(neighbor, from, previous);
           }
 
           i++;
 
-          distances.put(neighbor, current_dist + 1);
           queue.add(neighbor);
 
         }
       }
       return new LinkedList<V>();
     }
+
+    /**
+    * Moves backwards from To vertex to produce the shortest path
+    * @param To vertex
+    * @return reconstructed path
+    */
+    private Iterable<V> reconstructPath(V last, V from, HashMap<V, V> previous){
+      LinkedList<V> ret = new LinkedList<>();
+      ret.addFirst(last);
+      while (!last.equals(from)){
+        V prev = previous.get(last);
+        ret.addFirst(prev);
+        last = prev;
+      }
+      return ret;
+    }
+
   }
