@@ -209,6 +209,17 @@ public class HashGraph<V> implements Graph<V>
     }
 
     /**
+     * Tells whether the graph is empty.
+     *
+     * @return true iff the graph is empty. A graph is empty if it has
+     * no vertices and no edges.
+     */
+    public boolean isEmpty()
+    {
+      return graph.isEmpty();
+    }
+
+    /**
      * Tells whether an edge exists in the graph.
      *
      * @param from the source vertex
